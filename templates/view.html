@@ -1,0 +1,76 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>view</title>
+    <script class="u-script" type="text/javascript" src="{% static '/js/jquery.js' %}" defer=""></script>
+    <script class="u-script" type="text/javascript" src="{% static '/js/page.js' %}" defer=""></script>
+    <link rel="stylesheet" href=
+            "https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+
+    <style>
+        img {
+            height: 300px;
+            width: 300px;
+        }
+
+
+
+    </style>
+
+</head>
+
+<body>
+
+
+<table class="table table-striped table-dark">
+
+    <tbody>
+
+
+    <tbody>
+    {% for imgs in imgss %}
+        <tr>
+            <th>{{ forloop.counter }}</th>
+            <th><img src="../media/data/{{ folder }}/{{ imgs.0 }}"></th>
+            <th>{{ imgs.1 }}</th>
+            <th>
+
+                <button href="javascript:void(0)" class="btn btn-danger" onclick="mismatch('{{ username }}', '{{ imgs.0 }}')"; style="font-size: 30px">Mismatch</button>
+            </th>
+            <th>
+                <button href="javascript:void(0)" class="btn btn-success" onclick="match('{{ username }}', '{{ imgs.0 }}')"; style="font-size: 30px">Match</button>
+            </th>
+        </tr>
+    {% endfor %}
+
+
+</table>
+
+
+<script>
+
+    function match(user_name, filename) {
+        $.post("{% url 'survey:vote' %}", {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            user_name: user_name,
+            filename: filename,
+            label: 1
+        });
+    }
+
+    function mismatch(user_name, filename) {
+        $.post("{% url 'survey:vote' %}", {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            user_name: user_name,
+            filename: filename,
+            label: 0
+        });
+    }
+
+</script>
+
+
+</body>
+</html>
